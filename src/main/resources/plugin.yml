@@ -1,0 +1,4 @@
+name: IPRanger
+main: io.github.redwallhp.ipranger.IPRanger
+version: ${project.version}
+author: redwall_hp
