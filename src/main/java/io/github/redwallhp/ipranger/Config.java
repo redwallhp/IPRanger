@@ -25,6 +25,11 @@ public class Config {
     }
 
 
+    public String getApiKey() {
+        return configuration.getString("api_key", "REPLACE");
+    }
+
+
     public String getMessage() {
         return configuration.getString("message", "Compromised account");
     }

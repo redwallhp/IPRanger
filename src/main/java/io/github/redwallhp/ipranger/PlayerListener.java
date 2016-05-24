@@ -1,6 +1,7 @@
 package io.github.redwallhp.ipranger;
 
-import net.md_5.bungee.api.event.LoginEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
@@ -18,15 +19,22 @@ public class PlayerListener implements Listener {
 
 
     @EventHandler
-    public void onPlayerJoin(final LoginEvent event) {
+    public void onPlayerJoin(final PostLoginEvent event) {
 
-        String name = event.getConnection().getName();
-        String ip = event.getConnection().getAddress().getHostString();
+        String name = event.getPlayer().getName();
+        String ip = event.getPlayer().getAddress().getHostString();
 
         if (matchIp(ip)) {
-            String cmd = String.format("ban %s %s", name, plugin.getConfig().getMessage());
-            plugin.getProxy().getPluginManager().dispatchCommand(plugin.getProxy().getConsole(), cmd);
-            plugin.getLogger().info(String.format("Banned %s (%s): %s", name, ip, plugin.getConfig().getMessage()));
+            try {
+                String message = plugin.getConfig().getMessage();
+                MCBouncerRequest req = new MCBouncerRequest(plugin.getConfig().getApiKey());
+                req.ban(event.getPlayer(), message);
+                event.getPlayer().disconnect(new TextComponent("Banned: " + message));
+                plugin.getLogger().info(String.format("Banned %s (%s): %s", name, ip, message));
+                plugin.staffBroadcast(String.format("User %s has been automatically banned (%s)", name, message));
+            } catch (APIException ex) {
+                plugin.getLogger().warning(String.format("Error banning user %s: %s", name, ex.getMessage()));
+            }
         }
 
     }
