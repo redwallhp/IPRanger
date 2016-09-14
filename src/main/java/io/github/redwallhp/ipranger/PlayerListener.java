@@ -20,23 +20,27 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(final PostLoginEvent event) {
+        plugin.getProxy().getScheduler().runAsync(plugin, new Runnable() {
+            public void run() {
 
-        String name = event.getPlayer().getName();
-        String ip = event.getPlayer().getAddress().getHostString();
+                String name = event.getPlayer().getName();
+                String ip = event.getPlayer().getAddress().getHostString();
 
-        if (matchIp(ip)) {
-            try {
-                String message = plugin.getConfig().getMessage();
-                MCBouncerRequest req = new MCBouncerRequest(plugin.getConfig().getApiKey());
-                req.ban(event.getPlayer(), message);
-                event.getPlayer().disconnect(new TextComponent("Banned: " + message));
-                plugin.getLogger().info(String.format("Banned %s (%s): %s", name, ip, message));
-                plugin.staffBroadcast(String.format("User %s has been automatically banned (%s)", name, message));
-            } catch (APIException ex) {
-                plugin.getLogger().warning(String.format("Error banning user %s: %s", name, ex.getMessage()));
+                if (matchIp(ip)) {
+                    try {
+                        String message = plugin.getConfig().getMessage();
+                        MCBouncerRequest req = new MCBouncerRequest(plugin.getConfig().getApiKey());
+                        req.ban(event.getPlayer(), message);
+                        event.getPlayer().disconnect(new TextComponent("Banned: " + message));
+                        plugin.getLogger().info(String.format("Banned %s (%s): %s", name, ip, message));
+                        plugin.staffBroadcast(String.format("User %s has been automatically banned (%s)", name, message));
+                    } catch (APIException ex) {
+                        plugin.getLogger().warning(String.format("Error banning user %s: %s", name, ex.getMessage()));
+                    }
+                }
+
             }
-        }
-
+        });
     }
 
 
