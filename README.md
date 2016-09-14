@@ -7,7 +7,7 @@ This BungeeCord plugin is a companion to [MCBouncerBungeeCord](https://github.co
 IPRanger will accept either a single IP per line in its list, or wildcards with the `*` character. The sample below affects users connecting from [MCLeaks](https://www.reddit.com/r/admincraft/comments/4jm6wd/dealing_with_compromised_mcleaks_accounts/) using the IP blocks known at the time of this writing.
 
 ```
-api_key: "REPLACE"_
+api_key: "REPLACE"
 message: "Compromised account"
 
 ips:
