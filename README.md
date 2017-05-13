@@ -1,4 +1,5 @@
-#IPRanger
+IPRanger
+========
 
 This BungeeCord plugin is a companion to [MCBouncerBungeeCord](https://github.com/MCBouncer/MCBouncerBungeeCord), designed to automatically ban users connecting from specified IP ranges.
 
